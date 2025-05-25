@@ -122,8 +122,8 @@ const detectCandlestickPatterns = (dailyData: Stock['dailyData']): CandlestickPa
     const todayUpperShadow = today.high - Math.max(today.open, today.close);
     const todayLowerShadow = Math.min(today.open, today.close) - today.low;
     
-    const _yesterdayUpperShadow = yesterday.high - Math.max(yesterday.open, yesterday.close);
-    const _yesterdayLowerShadow = Math.min(yesterday.open, yesterday.close) - yesterday.low;
+   // const _yesterdayUpperShadow = yesterday.high - Math.max(yesterday.open, yesterday.close);
+    //const _yesterdayLowerShadow = Math.min(yesterday.open, yesterday.close) - yesterday.low;
     
     
     if (todayLowerShadow >= 2 * todayBody && todayUpperShadow <= todayBody * 0.3) {
