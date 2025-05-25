@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-Live Link:- https://ui-ux-trade-pro.vercel.app
-## Getting Started
+TradePro - Stock Trading Dashboard
 
-First, run the development server:
+TradePro is a modern and interactive stock trading dashboard built using Next.js. It provides users with a visually appealing interface to track and analyze stock market data, manage portfolios, and monitor trends in real-time. The application is designed to be fast, responsive, and easy to use.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Technologies Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- React
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Framer Motion
 
-## Learn More
+- Lucide Icons
 
-To learn more about Next.js, take a look at the following resources:
+- CSS Modules / Plain CSS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Vercel (for deployment)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Getting Started
 
-## Deploy on Vercel
+Prerequisites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Node.js (version 16 or higher)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- npm or yarn
+
+Installation Steps
+
+- Clone the repository
+     git clone https://github.com/yourusername/tradepro.git
+
+- Navigate to the project directory
+      cd tradepro
+
+- Install dependencies
+      npm install
+
+Running the Project Locally
+
+-To start the development server, run:
+    npm run dev
+
+-Then open your browser and go to: http://localhost:3000
+
+Building for Production
+
+- To create a production build, run:
+    npm run build
+
+- To preview the production build locally, run:
+    npm run start
+
+Deployment
+- TradePro is deployed on Vercel.
+- Visit the live application at: https://trade-pro-w4k2.vercel.app/
+
+Features
+
+- Live stock dashboard UI
+
+- Smooth animations with Framer Motion
+
+- Responsive and clean design
+
+- Easy navigation and intuitive layout
