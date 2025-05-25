@@ -45,9 +45,8 @@ export default function PortfolioTracker() {
   const [selectedStrategy, setSelectedStrategy] = useState(STRATEGIES[0].id);
   const [isBacktesting, setIsBacktesting] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const historyLength = useRef(30); // Days of historical data to generate
-
-  // Generate initial historical data
+  const historyLength = useRef(30); 
+  
   useEffect(() => {
     const generateHistory = (currentPrice: number) => {
       const history = [];
@@ -58,7 +57,7 @@ export default function PortfolioTracker() {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
         
-        // Random price movement
+     
         price = price * (1 + (Math.random() * 0.02 - 0.01));
         history.push({ price: parseFloat(price.toFixed(2)), date });
       }
@@ -72,7 +71,7 @@ export default function PortfolioTracker() {
     })));
   }, []);
 
-  // Update prices and history
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setPortfolio(prevPortfolio => 
@@ -125,7 +124,7 @@ export default function PortfolioTracker() {
   const runBacktest = () => {
     setIsBacktesting(true);
     
-    // Simulate API call
+    
     setTimeout(() => {
       const results: BacktestResult[] = [];
       const portfolioAssets = portfolio.filter(a => a.shares > 0);
@@ -135,29 +134,29 @@ export default function PortfolioTracker() {
         return;
       }
 
-      // Simulate different strategies
+     
       STRATEGIES.forEach(strategy => {
         let profit = 0;
         let trades = 0;
         let wins = 0;
         const history = [];
         
-        // Simulate 30 days of trading
+       
         for (let i = 0; i < 30; i++) {
           const dayProfit = portfolioAssets.reduce((sum, asset) => {
-            // Simple strategy simulations
+           
             let tradeResult = 0;
             trades++;
             
             if (strategy.id === 'moving_avg') {
-              // Mock moving average crossover
+             
               const shouldBuy = Math.random() > 0.5;
               tradeResult = shouldBuy ? asset.price * 0.02 : -asset.price * 0.01;
             } else if (strategy.id === 'momentum') {
-              // Mock momentum strategy
+             
               tradeResult = asset.change > 0 ? asset.price * 0.015 : -asset.price * 0.01;
             } else {
-              // Mock mean reversion
+              
               tradeResult = asset.change < 0 ? asset.price * 0.01 : -asset.price * 0.005;
             }
             
@@ -192,7 +191,7 @@ export default function PortfolioTracker() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-blue-400">Portfolio Tracker</h1>
 
-        {/* Portfolio Summary */}
+       
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <motion.div className="bg-gray-800 p-6 rounded-lg shadow-lg" whileHover={{ scale: 1.02 }}>
             <h3 className="text-gray-400 mb-2 flex items-center">
@@ -216,7 +215,7 @@ export default function PortfolioTracker() {
           </motion.div>
         </div>
 
-        {/* Add Asset Form */}
+        
         <motion.div 
           className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8"
           initial={{ opacity: 0, y: 20 }}
@@ -262,125 +261,125 @@ export default function PortfolioTracker() {
           </div>
         </motion.div>
 
-        {/* Backtesting Section */}
+        
         <motion.div 
           className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
             <h2 className="text-xl font-semibold text-blue-400 flex items-center">
               <History className="mr-2" size={20} /> Strategy Backtesting
             </h2>
             <button 
               onClick={() => setShowResults(!showResults)}
-              className="text-blue-400 hover:text-blue-300"
+              className="text-blue-400 hover:text-blue-300 mt-2 sm:mt-0"
             >
               {showResults ? 'Hide Results' : 'Show Results'}
             </button>
-          </div>
+            </div>
 
-          <div className="flex flex-col md:flex-row gap-4 mb-4">
-            <div className="flex-1">
+            <div className="flex flex-col md:flex-row gap-4 mb-4 w-full">
+            <div className="flex-1 min-w-0">
               <label className="block text-sm font-medium text-gray-400 mb-1">Strategy</label>
               <select
-                value={selectedStrategy}
-                onChange={(e) => setSelectedStrategy(e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+              value={selectedStrategy}
+              onChange={(e) => setSelectedStrategy(e.target.value)}
+              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
               >
-                {STRATEGIES.map(strategy => (
-                  <option key={strategy.id} value={strategy.id} className="bg-gray-800">
-                    {strategy.name}
-                  </option>
-                ))}
+              {STRATEGIES.map(strategy => (
+                <option key={strategy.id} value={strategy.id} className="bg-gray-800">
+                {strategy.name}
+                </option>
+              ))}
               </select>
             </div>
             
             <motion.button
               onClick={runBacktest}
               disabled={isBacktesting || portfolio.filter(a => a.shares > 0).length === 0}
-              className={`px-4 py-2 rounded flex items-center justify-center ${
-                isBacktesting || portfolio.filter(a => a.shares > 0).length === 0
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+              className={`px-4 py-2 rounded flex items-center justify-center w-full md:w-auto ${
+              isBacktesting || portfolio.filter(a => a.shares > 0).length === 0
+                ? 'bg-gray-600 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
               }`}
               whileHover={{ scale: isBacktesting ? 1 : 1.05 }}
               whileTap={{ scale: isBacktesting ? 1 : 0.95 }}
             >
               {isBacktesting ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Backtesting...
-                </>
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Backtesting...
+              </>
               ) : (
-                <>
-                  <LineChart className="mr-2" size={16} />
-                  Run Backtest
-                </>
+              <>
+                <LineChart className="mr-2" size={16} />
+                Run Backtest
+              </>
               )}
             </motion.button>
-          </div>
+            </div>
 
-          <AnimatePresence>
+            <AnimatePresence>
             {showResults && backtestResults.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                  {backtestResults.map((result, index) => (
-                    <motion.div
-                      key={index}
-                      className={`bg-gray-750 p-4 rounded-lg border ${
-                        result.strategy === STRATEGIES.find(s => s.id === selectedStrategy)?.name
-                          ? 'border-blue-500' : 'border-gray-700'
-                      }`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <h3 className="font-medium mb-2">{result.strategy}</h3>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Profit:</span>
-                        <span className={result.profit >= 0 ? 'text-green-400' : 'text-red-400'}>
-                          ${result.profit.toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-400">Trades:</span>
-                        <span>{result.trades}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Win Rate:</span>
-                        <span>{result.winRate}%</span>
-                      </div>
-                      <div className="mt-3 h-20">
-                        {/* Simple sparkline chart */}
-                        <svg width="100%" height="100%" viewBox="0 0 100 30" className="text-blue-400">
-                          <polyline
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            points={result.history.map((h, i) => 
-                              `${(i * 100) / (result.history.length - 1)},${30 - ((h.portfolioValue - totalValue + result.profit) / (result.profit * 2)) * 30}`
-                            ).join(' ')}
-                          />
-                        </svg>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                {backtestResults.map((result, index) => (
+                <motion.div
+                  key={index}
+                  className={`bg-gray-750 p-4 rounded-lg border ${
+                  result.strategy === STRATEGIES.find(s => s.id === selectedStrategy)?.name
+                    ? 'border-blue-500' : 'border-gray-700'
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <h3 className="font-medium mb-2">{result.strategy}</h3>
+                  <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-400">Profit:</span>
+                  <span className={result.profit >= 0 ? 'text-green-400' : 'text-red-400'}>
+                    ${result.profit.toFixed(2)}
+                  </span>
+                  </div>
+                  <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-400">Trades:</span>
+                  <span>{result.trades}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                  <span className="text-gray-400">Win Rate:</span>
+                  <span>{result.winRate}%</span>
+                  </div>
+                  <div className="mt-3 h-20 w-full">
+                  {/* Simple sparkline chart */}
+                  <svg width="100%" height="100%" viewBox="0 0 100 30" className="text-blue-400">
+                    <polyline
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    points={result.history.map((h, i) => 
+                      `${(i * 100) / (result.history.length - 1)},${30 - ((h.portfolioValue - totalValue + result.profit) / (result.profit * 2 || 1)) * 30}`
+                    ).join(' ')}
+                    />
+                  </svg>
+                  </div>
+                </motion.div>
+                ))}
+              </div>
+                  </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
 
-        {/* Portfolio Assets */}
+       
         {portfolio.filter(a => a.shares > 0).length === 0 ? (
           <motion.div 
             className="bg-gray-800 p-8 rounded-lg shadow-lg text-center"
