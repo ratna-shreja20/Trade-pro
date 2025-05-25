@@ -394,111 +394,171 @@ export default function PortfolioSimulator() {
 
   const renderCandlestickChart = () => {
     if (!selectedStock) return null;
-    
-    const data = selectedStock.dailyData.slice(-20); 
+
+    const data = selectedStock.dailyData.slice(-20);
     const minPrice = Math.min(...data.map(d => d.low));
     const maxPrice = Math.max(...data.map(d => d.high));
     const range = maxPrice - minPrice;
     const width = 700;
     const height = 200;
     const candleWidth = width / data.length * 0.7;
-    
+
+    // Responsive SVG: use viewBox and set width 100%, maxWidth, and horizontal scroll for overflow
     return (
-      <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`}>
-      
-        <rect x="0" y="0" width={width} height={height} fill="#1F2937" />
-        
-       
-        {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
-          <line 
-            key={`grid-${i}`}
-            x1="0" 
-            y1={height - (height * t)} 
-            x2={width} 
-            y2={height - (height * t)} 
-            stroke="#374151" 
-            strokeWidth="0.5"
-            strokeDasharray="2,2"
-          />
-        ))}
-        
-        {data.map((day, i) => {
-          const x = (i / data.length) * width + (width / data.length * 0.15);
-          const openY = height - ((day.open - minPrice) / range) * height;
-          const closeY = height - ((day.close - minPrice) / range) * height;
-          const highY = height - ((day.high - minPrice) / range) * height;
-          const lowY = height - ((day.low - minPrice) / range) * height;
-          const isBullish = day.close > day.open;
-          const color = isBullish ? '#10B981' : '#EF4444';
-          
-          const pattern = detectedPatterns.find(p => p.index === i + (selectedStock.dailyData.length - data.length));
-          
-          return (
-            <g key={`candle-${i}`}>
-             
-              <line 
-                x1={x + candleWidth/2} 
-                y1={highY} 
-                x2={x + candleWidth/2} 
-                y2={lowY} 
-                stroke={color} 
-                strokeWidth="1" 
-              />
-              
-            
-              <rect 
-                x={x} 
-                y={Math.min(openY, closeY)} 
-                width={candleWidth} 
-                height={Math.abs(openY - closeY)} 
-                fill={color} 
-                stroke={color} 
-                strokeWidth="0.5"
-              />
-              
-            
-              {pattern && (
-                <g>
-                  <circle 
-                    cx={x + candleWidth/2} 
-                    cy={highY - 10} 
-                    r="5" 
-                    fill={pattern.bullish ? '#10B981' : pattern.bullish === false ? '#EF4444' : '#6B7280'}
-                    stroke="#FFF"
-                    strokeWidth="1"
-                  />
-                  <text 
-                    x={x + candleWidth/2} 
-                    y={highY - 15} 
-                    textAnchor="middle" 
-                    dominantBaseline="middle" 
-                    fill="#FFF" 
-                    fontSize="8"
-                    fontWeight="bold"
-                  >
-                    {pattern.name.split(' ')[0].charAt(0)}
-                  </text>
-                </g>
-              )}
-            </g>
-          );
-        })}
-        
-       
-        <g transform={`translate(${width - 150}, 20)`}>
-          <rect x="0" y="0" width="140" height={detectedPatterns.length * 20 + 10} fill="#1F2937" stroke="#4B5563" rx="5" />
-          <text x="10" y="15" fill="#FFF" fontSize="10" fontWeight="bold">Patterns Detected:</text>
-          {detectedPatterns.map((pattern, i) => (
-            <g key={`legend-${i}`} transform={`translate(10, ${25 + i * 20})`}>
-              <circle cx="5" cy="5" r="4" fill={pattern.bullish ? '#10B981' : pattern.bullish === false ? '#EF4444' : '#6B7280'} />
-              <text x="15" y="5" fill="#FFF" fontSize="10" dominantBaseline="middle">{pattern.name}</text>
-            </g>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '100vw',
+          overflowX: 'auto',
+          margin: '0 auto'
+        }}
+      >
+        <svg
+          width="100%"
+          height="200"
+          viewBox={`0 0 ${width} ${height}`}
+          style={{ minWidth: 400, maxWidth: width, display: 'block' }}
+          preserveAspectRatio="xMinYMid meet"
+        >
+          <rect x="0" y="0" width={width} height={height} fill="#1F2937" />
+
+          {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
+            <line
+              key={`grid-${i}`}
+              x1="0"
+              y1={height - (height * t)}
+              x2={width}
+              y2={height - (height * t)}
+              stroke="#374151"
+              strokeWidth="0.5"
+              strokeDasharray="2,2"
+            />
           ))}
-          {detectedPatterns.length === 0 && (
-            <text x="70" y="30" fill="#9CA3AF" fontSize="10" textAnchor="middle">No patterns detected</text>
-          )}
-        </g>
-      </svg>
+
+          {data.map((day, i) => {
+            const x = (i / data.length) * width + (width / data.length * 0.15);
+            const openY = height - ((day.open - minPrice) / range) * height;
+            const closeY = height - ((day.close - minPrice) / range) * height;
+            const highY = height - ((day.high - minPrice) / range) * height;
+            const lowY = height - ((day.low - minPrice) / range) * height;
+            const isBullish = day.close > day.open;
+            const color = isBullish ? '#10B981' : '#EF4444';
+
+            const pattern = detectedPatterns.find(
+              p => p.index === i + (selectedStock.dailyData.length - data.length)
+            );
+
+            return (
+              <g key={`candle-${i}`}>
+                <line
+                  x1={x + candleWidth / 2}
+                  y1={highY}
+                  x2={x + candleWidth / 2}
+                  y2={lowY}
+                  stroke={color}
+                  strokeWidth="1"
+                />
+
+                <rect
+                  x={x}
+                  y={Math.min(openY, closeY)}
+                  width={candleWidth}
+                  height={Math.abs(openY - closeY) || 1}
+                  fill={color}
+                  stroke={color}
+                  strokeWidth="0.5"
+                  rx={candleWidth < 8 ? 1 : 2}
+                />
+
+                {pattern && (
+                  <g>
+                    <circle
+                      cx={x + candleWidth / 2}
+                      cy={highY - 10}
+                      r="5"
+                      fill={
+                        pattern.bullish
+                          ? '#10B981'
+                          : pattern.bullish === false
+                          ? '#EF4444'
+                          : '#6B7280'
+                      }
+                      stroke="#FFF"
+                      strokeWidth="1"
+                    />
+                    <text
+                      x={x + candleWidth / 2}
+                      y={highY - 15}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fill="#FFF"
+                      fontSize="8"
+                      fontWeight="bold"
+                    >
+                      {pattern.name.split(' ')[0].charAt(0)}
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Legend: hide on very small screens */}
+          <g
+            transform={`translate(${width - 150}, 20)`}
+            style={{ display: width < 500 ? 'none' : undefined }}
+          >
+            <rect
+              x="0"
+              y="0"
+              width="140"
+              height={detectedPatterns.length * 20 + 10}
+              fill="#1F2937"
+              stroke="#4B5563"
+              rx="5"
+            />
+            <text x="10" y="15" fill="#FFF" fontSize="10" fontWeight="bold">
+              Patterns Detected:
+            </text>
+            {detectedPatterns.map((pattern, i) => (
+              <g key={`legend-${i}`} transform={`translate(10, ${25 + i * 20})`}>
+                <circle
+                  cx="5"
+                  cy="5"
+                  r="4"
+                  fill={
+                    pattern.bullish
+                      ? '#10B981'
+                      : pattern.bullish === false
+                      ? '#EF4444'
+                      : '#6B7280'
+                  }
+                />
+                <text
+                  x="15"
+                  y="5"
+                  fill="#FFF"
+                  fontSize="10"
+                  dominantBaseline="middle"
+                >
+                  {pattern.name}
+                </text>
+              </g>
+            ))}
+            {detectedPatterns.length === 0 && (
+              <text
+                x="70"
+                y="30"
+                fill="#9CA3AF"
+                fontSize="10"
+                textAnchor="middle"
+              >
+                No patterns detected
+              </text>
+            )}
+          </g>
+        </svg>
+      </div>
     );
   };
 
