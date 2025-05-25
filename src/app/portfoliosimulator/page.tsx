@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PieChart, DollarSign, TrendingUp, ArrowUpRight, ArrowDownRight, X, Plus, Minus, LineChart, BarChart, CandlestickChart, Settings } from 'lucide-react';
+import { PieChart , ArrowUpRight, ArrowDownRight, X, Plus, Minus, LineChart, BarChart, CandlestickChart, Settings } from 'lucide-react';
 
 type Stock = {
   id: string;
