@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, ArrowDownRight, , Plus, Trash2, DollarSign, PieChart, LineChart, History } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight,  Plus, Trash2, DollarSign, PieChart, LineChart, History } from "lucide-react";
 
 type Asset = {
   id: string;
