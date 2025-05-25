@@ -27,7 +27,7 @@ Prerequisites
 Installation Steps
 
 - Clone the repository
-     git clone https://github.com/yourusername/tradepro.git
+     git clone https://github.com/ratna-shreja20/Trade-pro.git
 
 - Navigate to the project directory
       cd tradepro
